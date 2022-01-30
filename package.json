@@ -7,6 +7,10 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "framer-motion": "^5",
     "microcms-js-sdk": "^2.0.0",
     "next": "latest",
     "react": "^17.0.2",
