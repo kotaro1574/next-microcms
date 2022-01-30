@@ -1,43 +1,57 @@
 import { client } from '../libs/client'
-import { News } from '../types/news'
+import { Blog } from '../types/blog'
+import { Grid, GridItem, Heading, Image, Text, VStack } from '@chakra-ui/react'
 
-type Props = { news: News[] }
+type Props = { blogs: Blog[] }
 
-export default function Home({ news }: Props) {
+export default function Home({ blogs }: Props) {
   return (
     <>
-      <h1 className="container mx-auto px-10 pt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
-        記事一覧
-      </h1>
-      <div className="container mx-auto p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-        {news.map((n) => (
-          <div className="rounded overflow-hidden shadow-lg" key={n.id}>
-            <img
-              className="w-full"
-              src={n.eye_catch.url}
-              alt="Sunset in the mountains"
+      <Heading py={4} textAlign={'center'}>
+        ブログ一覧
+      </Heading>
+      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+        {blogs.map((blog, index) => (
+          <GridItem
+            className={'keor'}
+            key={`blog-${index}`}
+            w={'full'}
+            h={'350px'}
+            borderWidth={1}
+            borderRadius={4}
+          >
+            <Image
+              src={blog.image.url}
+              w={'200px'}
+              h={'200px'}
+              borderTopRadius={4}
             />
-            <div className="px-6 py-4">{n.title}</div>
-            <div className="px-6 pt-4 pb-2">
-              {n.tag && (
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #{n.tag}
-                </span>
-              )}
-            </div>
-          </div>
+            <VStack p={4} alignItems={'normal'} h={'150px'} spacing={1}>
+              <Text fontSize={'18px'} fontWeight={'bold'} isTruncated h={'20%'}>
+                {blog.title}
+              </Text>
+              <Text
+                fontSize={'14px'}
+                color={'gray.600'}
+                overflow={'hidden'}
+                h={'80%'}
+              >
+                {blog.description}
+              </Text>
+            </VStack>
+          </GridItem>
         ))}
-      </div>
+      </Grid>
     </>
   )
 }
 
 export const getServerSideProps = async () => {
-  const data = await client.get({ endpoint: 'news' })
+  const data = await client.get({ endpoint: 'blogs' })
 
   return {
     props: {
-      news: data.contents,
+      blogs: data.contents,
     },
   }
 }
